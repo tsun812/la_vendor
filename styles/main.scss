@@ -1,6 +1,7 @@
 body {
+  flex-direction: column;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   min-height: 100vh;
 
@@ -15,3 +16,32 @@ body {
     rgba(163, 208, 219, 1) 100%
   );
 }
+
+#description-container {
+  display: none;
+  border-style: solid;
+  border-bottom: blue solid 3px;
+  border-top: blue solid 3Px;
+  border-left: blue solid 3px;
+  border-right: blue solid 3px;
+  width: 100%;
+}
+
+#monalisa {
+  cursor: pointer;
+}
+
+.container-image {
+  position: relative;
+  text-align: center;
+}
+
+.bottom-right {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+  font-size: 12px;
+  color: #fff;
+  text-shadow: 0 0 8px rgb(138, 4, 4);
+}
+
