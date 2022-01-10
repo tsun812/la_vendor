@@ -16,8 +16,13 @@ body {
     rgba(163, 208, 219, 1) 100%
   );
 }
+// ---------------------------------- paintings and description boxes ----------
 
-#description-container {
+#monalisa {
+  cursor: pointer;
+}
+
+#monalisa-container {
   display: none;
   border-style: solid;
   border-bottom: blue solid 3px;
@@ -25,11 +30,47 @@ body {
   border-left: blue solid 3px;
   border-right: blue solid 3px;
   width: 100%;
+  height: 7em;
+  font-size: large;
+  font-style: black;
 }
 
-#monalisa {
+#campi {
   cursor: pointer;
 }
+
+#campi-container {
+  display: none;
+  border-style: solid;
+  border-bottom: blue solid 3px;
+  border-top: blue solid 3Px;
+  border-left: blue solid 3px;
+  border-right: blue solid 3px;
+  width: 100%;
+  height: 7em;
+  font-size: large;
+  font-style: black;
+}
+
+#face {
+  cursor: pointer;
+}
+
+#face-container {
+  display: none;
+  border-style: solid;
+  border-bottom: blue solid 3px;
+  border-top: blue solid 3Px;
+  border-left: blue solid 3px;
+  border-right: blue solid 3px;
+  width: 100%;
+  height: 7em;
+  font-size: large;
+  font-style: black;
+}
+
+
+// ---------------------------------- paintings and description boxes ----------
 
 .container-image {
   position: relative;

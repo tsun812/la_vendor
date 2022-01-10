@@ -1,34 +1,45 @@
 $(document).ready(function() {
- const descContainer = $("#description-container")
+  const monalisaContainer = $("#monalisa-container")
+  const campiContainer = $("#campi-container")
+  const faceContainer = $("#face-container")
 
- $("#monalisa").click(function () {
-  if ( descContainer.first().is( ":hidden" ) ) {
-    descContainer.slideDown( "slow" );
+  $("#monalisa").click(function (event) {
+    event.preventDefault()
+   if ( monalisaContainer.first().is( ":hidden" ) ) {
+    monalisaContainer.show( "slow" , () => {
+    });
+    monalisaContainer.text("This is monalisa")
   } else {
-    descContainer.hide();
+    monalisaContainer.hide();
   }
-});
-  })
+ })
 
-
-  /*
-
-<html>
-<head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-$(document).ready(function(){
-  $(".btn1").click(function(){
-    $("p").slideUp();
+ $("#campi").click(function (event) {
+  event.preventDefault()
+ if ( campiContainer.first().is( ":hidden" ) ) {
+  campiContainer.show( "slow" , () => {
   });
-  $(".btn2").click(function(){
-    $("p").slideDown();
+  campiContainer.text("This is campi")
+} else {
+  campiContainer.hide();
+}
+})
+
+$("#face").click(function (event) {
+  event.preventDefault()
+ if ( faceContainer.first().is( ":hidden" ) ) {
+  faceContainer.show( "slow" , () => {
   });
-});
-</script>
-</head>
-<body>
-  */
+  faceContainer.text("This is face")
+} else {
+  faceContainer.hide();
+}
+})
+
+
+
+
+})
 
 
 
