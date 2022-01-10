@@ -3,6 +3,10 @@ $(document).ready(function() {
   const campiContainer = $("#campi-container")
   const faceContainer = $("#face-container")
   const lastDanceContainer = $("#last_dance-container")
+  const geniusContainer = $("#genius-container")
+  const festivalContainer = $("#festival-container")
+  const womenContainer = $("#women-container")
+  const kidBearContainer = $("#kid_bear-container")
 
   $("#monalisa").click(function(event) {
     event.preventDefault()
@@ -53,7 +57,49 @@ $(document).ready(function() {
     }
   })
 
+  $("#genius").click(function(event) {
+    event.preventDefault()
+    if (geniusContainer.first().is(":hidden")) {
+      geniusContainer.show("slow", () => {
+      });
+      geniusContainer.text("Artwork: Genius - A. E.")
+    } else {
+      geniusContainer.hide();
+    }
+  })
 
+  $("#festival").click(function(event) {
+    event.preventDefault()
+    if (festivalContainer.first().is(":hidden")) {
+      festivalContainer.show("slow", () => {
+      });
+      festivalContainer.text("Artwork: Festival in Peru")
+    } else {
+      festivalContainer.hide();
+    }
+  })
+
+  $("#women").click(function(event) {
+    event.preventDefault()
+    if (womenContainer.first().is(":hidden")) {
+      womenContainer.show("slow", () => {
+      });
+      womenContainer.text("Artwork: Festival in Peru")
+    } else {
+      womenContainer.hide();
+    }
+  })
+
+  $("#kid-bear").click(function(event) {
+    event.preventDefault()
+    if (kidBearContainer.first().is(":hidden")) {
+      kidBearContainer.show("slow", () => {
+      });
+      kidBearContainer.text("Artwork: Festival in Peru")
+    } else {
+      kidBearContainer.hide();
+    }
+  })
 
 })
 
