@@ -39,7 +39,7 @@ const usersRoutes = require("./routes/users");
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
-app.use("/api/users", usersRoutes(db));
+//app.use("/home", usersRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
 // Home page
@@ -49,10 +49,23 @@ app.use("/api/users", usersRoutes(db));
 app.get("/", (req, res) => {
   res.render("index");
 });
+app.get("/home/:id", (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  const templateVars = { userid: id };
+  res.render("login", templateVars);
+});
+
 
 app.get("/sell_an_item", (req, res) => {
   res.render("sell_an_item")
   })
+
+app.get("/favourites", (req, res) => {
+  res.render("favourites")
+})
+
+app.get("/")
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
