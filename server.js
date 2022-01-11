@@ -57,6 +57,10 @@ app.get("/home/:id", (req, res) => {
 });
 
 
+app.get("/sell_an_item", (req, res) => {
+  res.render("sell_an_item")
+  })
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });

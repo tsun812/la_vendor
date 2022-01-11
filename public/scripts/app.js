@@ -7,6 +7,8 @@ $(document).ready(function() {
   const festivalContainer = $("#festival-container")
   const womenContainer = $("#women-container")
   const kidBearContainer = $("#kid_bear-container")
+  const textBox = $("#text-box")
+  const submit = $("#submit")
 
   $("#monalisa").click(function(event) {
     event.preventDefault()
@@ -14,6 +16,8 @@ $(document).ready(function() {
       monalisaContainer.show("slow", () => {
       });
       monalisaContainer.text("Artwork: Monalisa")
+      monalisaContainer.append(textBox)
+      monalisaContainer.append(submit)
     } else {
       monalisaContainer.hide();
     }
@@ -25,6 +29,8 @@ $(document).ready(function() {
       campiContainer.show("slow", () => {
       });
       campiContainer.text("Artwork: Campi")
+      campiContainer.append(textBox)
+      campiContainer.append(submit)
     } else {
       campiContainer.hide();
     }
@@ -36,6 +42,8 @@ $(document).ready(function() {
       faceContainer.show("slow", () => {
       });
       faceContainer.text("Artwork: Face")
+      faceContainer.append(textBox)
+      faceContainer.append(submit)
     } else {
       faceContainer.hide();
     }
@@ -52,6 +60,8 @@ $(document).ready(function() {
       lastDanceContainer.show("slow", () => {
       });
       lastDanceContainer.text("Artwork: Last Dance")
+      lastDanceContainer.append(textBox)
+      lastDanceContainer.append(submit)
     } else {
       lastDanceContainer.hide();
     }
@@ -63,6 +73,8 @@ $(document).ready(function() {
       geniusContainer.show("slow", () => {
       });
       geniusContainer.text("Artwork: Genius - A. E.")
+      geniusContainer.append(textBox)
+      geniusContainer.append(submit)
     } else {
       geniusContainer.hide();
     }
@@ -74,6 +86,8 @@ $(document).ready(function() {
       festivalContainer.show("slow", () => {
       });
       festivalContainer.text("Artwork: Festival in Peru")
+      festivalContainer.append(textBox)
+      festivalContainer.append(submit)
     } else {
       festivalContainer.hide();
     }
@@ -85,6 +99,8 @@ $(document).ready(function() {
       womenContainer.show("slow", () => {
       });
       womenContainer.text("Artwork: Festival in Peru")
+      womenContainer.append(textBox)
+      womenContainer.append(submit)
     } else {
       womenContainer.hide();
     }
@@ -96,6 +112,8 @@ $(document).ready(function() {
       kidBearContainer.show("slow", () => {
       });
       kidBearContainer.text("Artwork: Festival in Peru")
+      kidBearContainer.append(textBox)
+      kidBearContainer.append(submit)
     } else {
       kidBearContainer.hide();
     }
