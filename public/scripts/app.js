@@ -1,3 +1,4 @@
+/*
 $(document).ready(function() {
   const monalisaContainer = $("#monalisa-container")
   const campiContainer = $("#campi-container")
@@ -48,12 +49,12 @@ $(document).ready(function() {
       faceContainer.hide();
     }
   })
-
-  /*
-  Adding the description for the rest of the pcitures
-  Jan. 10 @ 7:00 PST
-  */
-
+*/
+/*
+Adding the description for the rest of the pcitures
+Jan. 10 @ 7:00 PST
+*/
+/*
   $("#last-dance").click(function(event) {
     event.preventDefault()
     if (lastDanceContainer.first().is(":hidden")) {
@@ -120,10 +121,29 @@ $(document).ready(function() {
   })
 
 })
+*/
 
+/*
+This will traverse to the closest parent (product-container)
+and traverse back down to closest child (product-info)
 
+- This is the function for the images - when the image is click,
+  it will show the information
+- When same image is click, the image will hide
+- Also,when another image is click, the previous image will hide the
+  information
+*/
 
-
-
-
+$(document).ready(function() {
+  $(".container-image").click(function(event) {
+    const showInfo = $(this).parent(".product-container")
+      .find(".product-info").is(":hidden")
+    $(".product-info").hide();
+    if (showInfo) {
+      $(this).parent(".product-container")
+        .find(".product-info")
+        .show()
+    }
+  })
+});
 
