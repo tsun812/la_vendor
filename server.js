@@ -58,6 +58,33 @@ app.get("/favourites", (req, res) => {
 
 app.get("/")
 
+// ------------------------------------ app.post ------------------------------
+
+
+app.post("/sell_an_item/upload", async(req, res) => {
+  const title = req.body.title
+  const price = req.body.price
+  const description = req.body.description
+  const url = req.body.url
+  console.log("req.body",req.body)
+  const queryString = `
+  INSERT INTO products (title, price, description,url_photo)
+  VALUES ($1, $2, $3, $4)
+  RETURNING *;
+  `;
+  const values = [title, Number(price), description, url];
+   await db.query(queryString, values)
+    .then(result => {
+      console.log("result",result.rows)
+       res.redirect("/")
+    })
+    .catch((e) => {
+      console.log(e)
+      res.status(403).send("error occurs test") }
+
+   )
+  })
+
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
