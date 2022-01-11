@@ -1,4 +1,4 @@
--- Drop and recreate products table 
+-- Drop and recreate products table
 
 DROP TABLE IF EXISTS products CASCADE;
 CREATE TABLE products (
@@ -8,6 +8,6 @@ CREATE TABLE products (
   description TEXT NOT NULL,
   url_photo VARCHAR(255) NOT NULL,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-  date_posted DATE NOT NULL,
+  date_posted TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   available_status BOOLEAN DEFAULT TRUE
 )
