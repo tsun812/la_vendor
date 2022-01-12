@@ -78,7 +78,6 @@ app.post("/sell_an_item/upload", (req, res) => {
   const price = req.body.price
   const description = req.body.description
   const url = req.body.url
-  console.log("req.body",req.body)
   const queryString = `
   INSERT INTO products (title, price, description,url_photo)
   VALUES ($1, $2, $3, $4)
@@ -91,7 +90,6 @@ app.post("/sell_an_item/upload", (req, res) => {
     })
     .catch((e) => {
       res.status(403).send("error occurs")
-      console.log(e)
     }
    )
   })
@@ -104,14 +102,12 @@ app.post("/sell_an_item/upload", (req, res) => {
     FROM products
     WHERE id = 1
     `
-    console.log("Req",req.body)
     db.query(querystring)
     .then(result => {
 
       res.redirect("/")
     })
     .catch((e) => {
-      console.log(e)
       res.status(403).send("error occurs") }
     )
    })
