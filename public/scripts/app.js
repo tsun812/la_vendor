@@ -133,9 +133,48 @@ and traverse back down to closest child (product-info)
 - Also,when another image is click, the previous image will hide the
   information
 */
+const container = $(".container");
+  const addProductToList = function(products) {
+    container.append(products);
+}
+  const createProduct = function(product) {
+    console.log(product);
+    return `
+    <div class="col border">
+      <ul class="product-container">
+        <div class="container-image">
+          <img alt=${product.title} 
+            src= ${product.url_photo} width="200"
+            height="300"/> 
+          <div class="bottom-right"><i class="fas fa-heart"></i></div>
+        </div>
+        <div class="product-info" id="campi-container">
+          <textarea id="text-box" placeholder="send a message"></textarea>
+          <input id="submit" type="submit">
+        </div>
+      </ul>
+    </div>
+    `
+  }
+  function addProducts(products){
+    console.log(products);
+    for (let i = 0; i < products.length; i++) {
+      console.log(products[i]);
+      const productHTML = createProduct(products[i]);
+      addProductToList(productHTML);
+    }
+  }
+  function getAllListings() {
+    let url = "/getlists";
+    return $.ajax({url: url, method: 'GET'});
+  }
+  getAllListings().then(function( data ) {
+    console.log(data);
+    addProducts(data);
+  });
 
-$(document).ready(function() {
-  $(".container-image").click(function(event) {
+  function OnloadFunction (){
+    $(".container-image").click(function(event) {
     const showInfo = $(this).parent(".product-container")
       .find(".product-info").is(":hidden")
     $(".product-info").hide();
@@ -144,6 +183,8 @@ $(document).ready(function() {
         .find(".product-info")
         .show()
     }
-  })
-});
+  })}
+
+  $(document).ready(OnloadFunction());
+
 
