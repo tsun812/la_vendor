@@ -61,7 +61,7 @@ app.get("/")
 // ------------------------------------ app.post ------------------------------
 
 
-app.post("/sell_an_item/upload", async(req, res) => {
+app.post("/sell_an_item/upload", (req, res) => {
   const title = req.body.title
   const price = req.body.price
   const description = req.body.description
@@ -73,17 +73,36 @@ app.post("/sell_an_item/upload", async(req, res) => {
   RETURNING *;
   `;
   const values = [title, Number(price), description, url];
-   await db.query(queryString, values)
+    db.query(queryString, values)
     .then(result => {
-      console.log("result",result.rows)
        res.redirect("/")
     })
     .catch((e) => {
+      res.status(403).send("error occurs")
       console.log(e)
-      res.status(403).send("error occurs test") }
-
+    }
    )
   })
+
+  app.post("/delete", async(req, res) => {
+
+
+    const querystring = `
+    DELETE
+    FROM products
+    WHERE id = 1
+    `
+    console.log("Req",req.body)
+    db.query(querystring)
+    .then(result => {
+
+      res.redirect("/")
+    })
+    .catch((e) => {
+      console.log(e)
+      res.status(403).send("error occurs") }
+    )
+   })
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
