@@ -8,7 +8,7 @@ const sassMiddleware = require("./lib/sass-middleware");
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
-//const cookieSession = require('cookie-session');
+const database = require('./database');
 
 // PG database client/connection setup
 const { Pool } = require("pg");
@@ -48,6 +48,20 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+
+app.get("/getlists", (req, res) => {
+  //console.log(database.getProducts());
+  database.getProducts()
+    .then(result => {
+      console.log("result",result);
+      return res.json(result);
+    })
+    .catch((e) => {
+      console.log(e);
+    }
+    );
+});
+
 app.get("/sell_an_item", (req, res) => {
   res.render("sell_an_item")
   })
@@ -55,8 +69,6 @@ app.get("/sell_an_item", (req, res) => {
 app.get("/favourites", (req, res) => {
   res.render("favourites")
 })
-
-app.get("/")
 
 // ------------------------------------ app.post ------------------------------
 
