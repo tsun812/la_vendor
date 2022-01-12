@@ -21,9 +21,8 @@ module.exports = (db) => {
     //const id = req.params.id;
     req.session = req.params;
     const id = req.session.id;
-    console.log(req.session);
-    const templateVars = { userid: id };
-    res.render("login", templateVars);
+    //console.log(id);
+    res.redirect("/");
   });
   router.get("/:id/logout", (req, res) => {
     //const id = req.params.id;

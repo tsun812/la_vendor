@@ -9,6 +9,8 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const database = require('./database');
+const cookieSession = require('cookie-session');
+
 
 // PG database client/connection setup
 const { Pool } = require("pg");
@@ -28,7 +30,13 @@ app.use(
     isSass: false, // false => scss, true => sass
   })
 );
+app.use(cookieSession({
+  name: 'session',
+  keys: ["abc", "def"],
 
+  // Cookie Options
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}));
 app.use(express.static("public"));
 const usersRoutes = require("./routes/users");
 app.use("/home", usersRoutes(db));
@@ -45,6 +53,7 @@ app.use("/home", usersRoutes(db));
 // Separate them into separate routes files (see above).
 
 app.get("/", (req, res) => {
+  console.log(req.session.id);
   res.render("index");
 });
 
