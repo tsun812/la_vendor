@@ -147,15 +147,15 @@ const container = $(".container");
           <img alt=${product.title}
             src= ${product.url_photo} width="200"
             height="300"/>
+            <form method="post" action="/products/delete/${product.id}">
+            <button id="delete-monalisa" type="submit">delete</button>
+          </form>
           <div class="bottom-right"><i class="fas fa-heart"></i></div>
         </div>
         <div class="product-info" id="campi-container">
-        <form method="post" action="/delete">
-        <textarea id="text-box" placeholder="send a message"></textarea>
+          <textarea id="text-box" placeholder="send a message to vendor"></textarea>
           <input id="submit" type="submit">
-            <button id="delete-monalisa" type="submit">delete</button>
-          </form>
-       </div>
+        </div>
       </ul>
     </div>
     `
