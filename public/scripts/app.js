@@ -134,13 +134,14 @@ and traverse back down to closest child (product-info)
   information
 */
 const container = $(".container");
-  const addProductToList = function(products) {
-    container.append(products);
+//const row = $(".row");
+  const addProductToList = function(products, rowNum) {
+    $(".row:last").append(products);
 }
   const createProduct = function(product) {
     console.log(product);
     return `
-    <div class="col border">
+    <div class="col-md-3 border">
       <ul class="product-container">
         <div class="container-image">
           <img alt=${product.title}
@@ -162,9 +163,17 @@ const container = $(".container");
   function addProducts(products){
     console.log(products);
     for (let i = 0; i < products.length; i++) {
+      if (i % 4 === 0){ 
+        container.append(`<div class="row">`);
+      }
       console.log(products[i]);
-      const productHTML = createProduct(products[i]);
+      let rowNum = (i - (i % 4)) / 4;
+      console.log(rowNum);
+      const productHTML = createProduct(products[i], rowNum);
       addProductToList(productHTML);
+      if (i % 4 === 3) {
+        container.append(`</div>`)
+      }
     }
   }
   function getAllListings() {
