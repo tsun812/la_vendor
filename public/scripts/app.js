@@ -173,8 +173,8 @@ const container = $(".container");
     addProducts(data);
   });
 
-  function OnloadFunction (){
-    $(".container-image").click(function(event) {
+  $(document).on('click', '.container-image', function(){
+    $(".container-image").on("click", function(event) {
     const showInfo = $(this).parent(".product-container")
       .find(".product-info").is(":hidden")
     $(".product-info").hide();
@@ -182,9 +182,6 @@ const container = $(".container");
       $(this).parent(".product-container")
         .find(".product-info")
         .show()
-    }
-  })}
-
-  $(document).ready(OnloadFunction());
-
+    }})
+});
 
