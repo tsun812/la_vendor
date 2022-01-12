@@ -8,15 +8,13 @@ const sassMiddleware = require("./lib/sass-middleware");
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
+const database = require('./database');
 
 // PG database client/connection setup
 const { Pool } = require("pg");
 const dbParams = require("./lib/db.js");
 const db = new Pool(dbParams);
 db.connect();
-// Load the logger first so all (static) HTTP requests are logged to STDOUT
-// 'dev' = Concise output colored by response status for development use.
-//         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
 app.use(morgan("dev"));
 
 app.set("view engine", "ejs");
@@ -32,10 +30,10 @@ app.use(
 );
 
 app.use(express.static("public"));
-
+const usersRoutes = require("./routes/users");
+app.use("/home", usersRoutes(db));
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
-const usersRoutes = require("./routes/users");
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
@@ -49,13 +47,20 @@ const usersRoutes = require("./routes/users");
 app.get("/", (req, res) => {
   res.render("index");
 });
-app.get("/home/:id", (req, res) => {
-  const id = req.params.id;
-  console.log(id);
-  const templateVars = { userid: id };
-  res.render("login", templateVars);
-});
 
+
+app.get("/getlists", (req, res) => {
+  //console.log(database.getProducts());
+  database.getProducts()
+    .then(result => {
+      console.log("result",result);
+      return res.json(result);
+    })
+    .catch((e) => {
+      console.log(e);
+    }
+    );
+});
 
 app.get("/sell_an_item", (req, res) => {
   res.render("sell_an_item")
@@ -65,7 +70,51 @@ app.get("/favourites", (req, res) => {
   res.render("favourites")
 })
 
-app.get("/")
+// ------------------------------------ app.post ------------------------------
+
+
+app.post("/sell_an_item/upload", (req, res) => {
+  const title = req.body.title
+  const price = req.body.price
+  const description = req.body.description
+  const url = req.body.url
+  console.log("req.body",req.body)
+  const queryString = `
+  INSERT INTO products (title, price, description,url_photo)
+  VALUES ($1, $2, $3, $4)
+  RETURNING *;
+  `;
+  const values = [title, Number(price), description, url];
+    db.query(queryString, values)
+    .then(result => {
+       res.redirect("/")
+    })
+    .catch((e) => {
+      res.status(403).send("error occurs")
+      console.log(e)
+    }
+   )
+  })
+
+  app.post("/delete", async(req, res) => {
+
+
+    const querystring = `
+    DELETE
+    FROM products
+    WHERE id = 1
+    `
+    console.log("Req",req.body)
+    db.query(querystring)
+    .then(result => {
+
+      res.redirect("/")
+    })
+    .catch((e) => {
+      console.log(e)
+      res.status(403).send("error occurs") }
+    )
+   })
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

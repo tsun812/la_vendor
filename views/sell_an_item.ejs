@@ -58,24 +58,24 @@
 
     <div class="item-register">
 
-      <form action="/sell_an_item/upload">
+      <form action="/sell_an_item/upload" method="post">
         <!-- <a>Title of Painting</a> -->
         <br>
-        <textarea id="title" placeholder="Title"></textarea>
+        <input class="form-control" type="text" name="title" placeholder="Title" style="width: 300px; margin: 1em">
         <br>
         <!-- <a>Price</a> -->
         <br>
-        <textarea id="price" placeholder="Price in CAD"></textarea>
+        <input class="form-control" type="number" name="price" placeholder="Price in CAD" style="width: 300px; margin: 1em">
         <br>
         <!-- <a>Description</a> -->
         <br>
-        <textarea id="description" placeholder="Description"></textarea>
+        <input class="form-control" type="text" name="description" placeholder="Description" style="width: 300px; height: 200px; margin: 1em">
         <br>
         <!-- <a>Type Url of the photo</a> -->
         <br>
-        <textarea id="url" placeholder="http://"></textarea>
+        <input class="form-control" type="url" name="url" placeholder="http://" style="width: 300px; margin: 1em">
         <br>
-        <input type="submit">
+        <button type="submit">submit</button>
 
       </form>
 
