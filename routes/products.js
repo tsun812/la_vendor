@@ -34,6 +34,26 @@ module.exports = (db) => {
       return res.status(403).send("error occurs") }
     )
   });
+  router.post("/sell_an_item/upload", (req, res) => {
+  const title = req.body.title
+  const price = req.body.price
+  const description = req.body.description
+  const url = req.body.url
+  const queryString = `
+  INSERT INTO products (title, price, description,url_photo)
+  VALUES ($1, $2, $3, $4)
+  RETURNING *;
+  `;
+  const values = [title, Number(price), description, url];
+    db.query(queryString, values)
+    .then(result => {
+       res.redirect("/")
+    })
+    .catch((e) => {
+      res.status(403).send("error occurs")
+    }
+   )
+  })
 
     return router;
   }
