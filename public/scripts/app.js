@@ -148,11 +148,11 @@ const container = $(".container");
     let productHTML = `
     <div class="col-md-3 border">
       <ul class="product-container">
-        <div class="container-image">
+        <div class="container-image" >
           <img alt=${product.title}
             src= ${product.url_photo} width="200"
             height="300"/>
-          <div class="bottom-right"><i class="fas fa-heart"></i></div>
+          <div class="bottom-right"><i class="fas fa-heart" id = ${product.id}></i></div>
           ${showDelete ? deleteButton : ""}
         </div>
         <div class="product-info" id="campi-container">
@@ -189,11 +189,15 @@ const container = $(".container");
 
     }
   }
+
   
   //this function returns current user id
   function getCurrUserId(data){
    return data[0].user_id;
   }
+  
+  
+
   function getAllListings() {
     let url = "/getlists";
     return $.ajax({url: url, method: 'GET'});
@@ -203,6 +207,7 @@ const container = $(".container");
     let url = "/getUser";
     return $.ajax({url: url, method: 'GET'});
   }
+
   let params = [];
   $.when(
   //get all paintings 
@@ -232,3 +237,14 @@ $(document).on("click", ".container-image", function () {
     }
   });
 });
+function addToFavourites(productID) {
+  //click the heart emoji to add the image to favourites
+  //created a class for the heart emoji to get an easy handle
+  let url = '/addFavourites';
+  return $.ajax({ url: url, method: 'POST', data: 'product_id=' + productID });
+}
+$(document).on('click', '.fa-heart', function() {
+      const productID = $(this).attr('id');
+      console.log(productID);
+      addToFavourites(productID);
+  })

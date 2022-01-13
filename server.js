@@ -6,6 +6,7 @@ require("dotenv").config();
 const PORT = process.env.PORT || 8080;
 const sassMiddleware = require("./lib/sass-middleware");
 const express = require("express");
+const bodyParser = require("body-parser");
 const app = express();
 const morgan = require("morgan");
 const database = require("./database");
@@ -39,6 +40,7 @@ app.use(
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
   })
 );
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 const usersRoutes = require("./routes/users");
 const productsRoutes = require("./routes/products");
@@ -81,9 +83,22 @@ app.get("/sell_an_item", (req, res) => {
   res.render("sell_an_item");
 });
 
+
 app.get("/favourites", (req, res) => {
-  res.render("favourites");
-});
+  //retrieve the favourites from the database
+  //and pass it to the res.render
+  //return info from favourites table
+  res.render("favourites")
+})
+
+app.post('/addFavourites', (req, res) => {
+  console.log(req.body)
+  database.addToFavourite(1, req.body.product_id)
+    .then(result => {
+      console.log(result)
+      res.redirect('/favourites');
+    })
+})
 
 // ------------------------------------ app.post ------------------------------
 
