@@ -24,7 +24,7 @@ module.exports = (db) => {
      const querystring = `
     DELETE
     FROM products
-    WHERE id = $1
+    WHERE id = $1 
     `
     db.query(querystring, [id])
     .then(result => {
@@ -35,9 +35,6 @@ module.exports = (db) => {
       return res.status(403).send("error occurs") }
     )
   });
-
-
-
 
     return router;
   }

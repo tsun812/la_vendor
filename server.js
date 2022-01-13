@@ -72,6 +72,9 @@ app.get("/getlists", (req, res) => {
     }
     );
 });
+app.get("/getUser", (req, res) => {
+  return res.json(req.session.id);
+});
 
 app.get("/sell_an_item", (req, res) => {
   res.render("sell_an_item")

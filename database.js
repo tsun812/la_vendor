@@ -13,7 +13,7 @@ const db = new Pool({
  * @return {Promise<{}>} A promise to the user.
  */
 const getProducts = function() {
-  const queryString = `SELECT id, title, price, description, url_photo FROM products`;
+  const queryString = `SELECT id, title, price, description, url_photo, user_id FROM products`;
   console.log("getProducts");
    return db.query(queryString)
     .then(result => {
