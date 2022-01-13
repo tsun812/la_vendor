@@ -135,22 +135,23 @@ and traverse back down to closest child (product-info)
 */
 const container = $(".container");
 //const row = $(".row");
-  const addProductToList = function(products, rowNum) {
-    $(".row:last").append(products);
-}
-  const createProduct = function(product) {
-    console.log(product);
-    return `
+const addProductToList = function (products, rowNum) {
+  $(".row:last").append(products);
+};
+const createProduct = function (product, showDelete) {
+  const deleteButton = `
+    <form method="post" action="/products/delete/${product.id}">
+      <button id="delete-monalisa" type="submit">delete</button>
+    </form>`;
+  return `
     <div class="col-md-3 border">
       <ul class="product-container">
         <div class="container-image">
           <img alt=${product.title}
             src= ${product.url_photo} width="200"
             height="300"/>
-            <form method="post" action="/products/delete/${product.id}">
-            <button id="delete-monalisa" type="submit">delete</button>
-          </form>
           <div class="bottom-right"><i class="fas fa-heart"></i></div>
+          ${showDelete ? deleteButton : ""}
         </div>
         <div class="product-info" id="campi-container">
           <textarea id="text-box" placeholder="send a message to vendor"></textarea>
@@ -158,42 +159,43 @@ const container = $(".container");
         </div>
       </ul>
     </div>
-    `
-  }
-  function addProducts(products){
-    console.log(products);
-    for (let i = 0; i < products.length; i++) {
-      if (i % 4 === 0){ 
-        container.append(`<div class="row">`);
-      }
-      console.log(products[i]);
-      let rowNum = (i - (i % 4)) / 4;
-      console.log(rowNum);
-      const productHTML = createProduct(products[i], rowNum);
-      addProductToList(productHTML);
-      if (i % 4 === 3) {
-        container.append(`</div>`)
-      }
+    `;
+};
+function addProducts(products) {
+  console.log(products);
+  for (let i = 0; i < products.length; i++) {
+    if (i % 4 === 0) {
+      container.append(`<div class="row">`);
+    }
+    console.log(products[i]);
+    const productHTML = createProduct(
+      products[i],
+      document.cookie.indexOf("session=") > -1
+    );
+    addProductToList(productHTML);
+    if (i % 4 === 3) {
+      container.append(`</div>`);
     }
   }
-  function getAllListings() {
-    let url = "/getlists";
-    return $.ajax({url: url, method: 'GET'});
-  }
-  getAllListings().then(function( data ) {
-    console.log(data);
-    addProducts(data);
-  });
-
-  $(document).on('click', '.container-image', function(){
-    $(".container-image").on("click", function(event) {
-    const showInfo = $(this).parent(".product-container")
-      .find(".product-info").is(":hidden")
-    $(".product-info").hide();
-    if (showInfo) {
-      $(this).parent(".product-container")
-        .find(".product-info")
-        .show()
-    }})
+}
+function getAllListings() {
+  let url = "/getlists";
+  return $.ajax({ url: url, method: "GET" });
+}
+getAllListings().then(function (data) {
+  console.log(data);
+  addProducts(data);
 });
 
+$(document).on("click", ".container-image", function () {
+  $(".container-image").on("click", function (event) {
+    const showInfo = $(this)
+      .parent(".product-container")
+      .find(".product-info")
+      .is(":hidden");
+    $(".product-info").hide();
+    if (showInfo) {
+      $(this).parent(".product-container").find(".product-info").show();
+    }
+  });
+});
