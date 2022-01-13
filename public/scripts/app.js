@@ -135,23 +135,23 @@ and traverse back down to closest child (product-info)
 */
 const container = $(".container");
 //const row = $(".row");
-const addProductToList = function (products, rowNum) {
-  $(".row:last").append(products);
-};
-const createProduct = function (product, showDelete) {
-  const deleteButton = `
-    <form method="post" action="/products/delete/${product.id}">
-      <button id="delete-monalisa" type="submit">delete</button>
-    </form>`;
-  return `
+  const addProductToList = function(product) {
+    $(".row:last").append(product);
+    
+}
+  const createProduct = function(product, user, index) {
+    //console.log(product);
+    let productHTML = `
     <div class="col-md-3 border">
       <ul class="product-container">
         <div class="container-image">
           <img alt=${product.title}
             src= ${product.url_photo} width="200"
             height="300"/>
+            <form method="post" action="/products/delete/${product.id}">
+            <button id="delete-monalisa" type="submit">delete</button>
+          </form>
           <div class="bottom-right"><i class="fas fa-heart"></i></div>
-          ${showDelete ? deleteButton : ""}
         </div>
         <div class="product-info" id="campi-container">
           <textarea id="text-box" placeholder="send a message to vendor"></textarea>
@@ -159,43 +159,74 @@ const createProduct = function (product, showDelete) {
         </div>
       </ul>
     </div>
-    `;
-};
-function addProducts(products) {
-  console.log(products);
-  for (let i = 0; i < products.length; i++) {
-    if (i % 4 === 0) {
-      container.append(`<div class="row">`);
-    }
-    console.log(products[i]);
-    const productHTML = createProduct(
-      products[i],
-      document.cookie.indexOf("session=") > -1
-    );
+    `
+    let user_id = parseInt(user);
+    let curr_id = parseInt(product.user_id);
+    console.log(curr_id);
+    console.log(user_id);
     addProductToList(productHTML);
-    if (i % 4 === 3) {
-      container.append(`</div>`);
+    if(user_id === curr_id) {
+      console.log("here");
+      const containerImage = $(".container-image:last");
+      containerImage.append('<button type="button">Sold</button>');
     }
   }
-}
-function getAllListings() {
-  let url = "/getlists";
-  return $.ajax({ url: url, method: "GET" });
-}
-getAllListings().then(function (data) {
-  console.log(data);
-  addProducts(data);
-});
+  function addProducts(products, user){
+    //console.log(products);
+    for (let i = 0; i < products.length; i++) {
+      if (i % 4 === 0){ 
+        container.append(`<div class="row">`);
+      }
+      //console.log(products[i]);
+      //console.log(rowNum);
+      const productHTML = createProduct(products[i], user, i);
+      //addProductToList(productHTML);
+      if (i % 4 === 3) {
+        container.append(`</div>`)
+      }
 
-$(document).on("click", ".container-image", function () {
-  $(".container-image").on("click", function (event) {
-    const showInfo = $(this)
-      .parent(".product-container")
-      .find(".product-info")
-      .is(":hidden");
+    }
+  }
+  
+  //this function returns current user id
+  function getCurrUserId(data){
+   return data[0].user_id;
+  }
+  function getAllListings() {
+    let url = "/getlists";
+    return $.ajax({url: url, method: 'GET'});
+  }
+
+  function getUser() {
+    let url = "/getUser";
+    return $.ajax({url: url, method: 'GET'});
+  }
+  let params = [];
+  $.when(
+  //get all paintings 
+  getAllListings().then(function( data ) {
+    params[0] = data;
+  }),
+  //get current user's id
+  getUser().then(function( user ) {
+    params[1] = user;
+  })
+  )
+  .then(
+    function(){
+    addProducts(params[0], params[1]);
+    }
+  );
+
+  $(document).on('click', '.container-image', function(){
+    $(".container-image").on("click", function(event) {
+    const showInfo = $(this).parent(".product-container")
+      .find(".product-info").is(":hidden")
     $(".product-info").hide();
     if (showInfo) {
-      $(this).parent(".product-container").find(".product-info").show();
-    }
-  });
+      $(this).parent(".product-container")
+        .find(".product-info")
+        .show()
+    }})
 });
+
