@@ -17,18 +17,28 @@ app.use(cookieSession({
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
 module.exports = (db) => {
-  router.get("/:id", (req, res) => {
-    //const id = req.params.id;
-    req.session = req.params;
-    const id = req.session.id;
-    //console.log(id);
-    res.redirect("/");
+  router.post("/delete/:id", (req, res) => {
+    //sql query to delete a record with id
+   const id = req.params.id;
+   console.log("+++++++++++++", id)
+     const querystring = `
+    DELETE
+    FROM products
+    WHERE id = $1
+    `
+    db.query(querystring, [id])
+    .then(result => {
+
+      return res.redirect("/")
+    })
+    .catch((e) => {
+      return res.status(403).send("error occurs") }
+    )
   });
-  router.get("/:id/logout", (req, res) => {
-    //const id = req.params.id;
-    req.session = null;
-    res.redirect("/");
-  });
+
+
+
+
     return router;
-  } 
-  
+  }
+
