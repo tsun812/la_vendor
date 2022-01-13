@@ -64,7 +64,7 @@ app.get("/getlists", (req, res) => {
   //console.log(database.getProducts());
   database.getProducts()
     .then(result => {
-      console.log("result",result);
+      console.log("result", result);
       return res.json(result);
     })
     .catch((e) => {
@@ -75,10 +75,21 @@ app.get("/getlists", (req, res) => {
 
 app.get("/sell_an_item", (req, res) => {
   res.render("sell_an_item")
-  })
+})
 
 app.get("/favourites", (req, res) => {
+  //retrieve the favourites from the database
+  //and pass it to the res.render
   res.render("favourites")
+})
+
+app.post('/addFavourites', (req, res) => {
+  console.log(req.body)
+  database.addToFavourite(1, req.body.product_id)
+    .then(result => {
+      console.log(result)
+      res.redirect('/favourites');
+    })
 })
 
 // ------------------------------------ app.post ------------------------------
@@ -105,23 +116,23 @@ app.get("/favourites", (req, res) => {
 //    )
 //   })
 
-  // app.post("/delete", async(req, res) => {
+// app.post("/delete", async(req, res) => {
 
 
-  //   const querystring = `
-  //   DELETE
-  //   FROM products
-  //   WHERE id = 1
-  //   `
-  //   db.query(querystring)
-  //   .then(result => {
+//   const querystring = `
+//   DELETE
+//   FROM products
+//   WHERE id = 1
+//   `
+//   db.query(querystring)
+//   .then(result => {
 
-  //     res.redirect("/")
-  //   })
-  //   .catch((e) => {
-  //     res.status(403).send("error occurs") }
-  //   )
-  //  })
+//     res.redirect("/")
+//   })
+//   .catch((e) => {
+//     res.status(403).send("error occurs") }
+//   )
+//  })
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

@@ -26,4 +26,10 @@ const getProducts = function() {
     }
     )
 }
+
+const addToFavourite = (user_id, product_id) => {
+  const queryString = `INSERT INTO favourites (user_id, product_id) VALUES($1, $2)`;
+  return db.query(queryString, [user_id, product_id]);
+}
 exports.getProducts = getProducts;
+exports.addToFavourite = addToFavourite;

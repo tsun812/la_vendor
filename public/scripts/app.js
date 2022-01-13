@@ -150,7 +150,7 @@ const createProduct = function(product) {
             <form method="post" action="/products/delete/${product.id}">
             <button id="delete-monalisa" type="submit">delete</button>
           </form>
-          <div class="bottom-right"><i class="fas fa-heart"></i></div>
+          <div class="bottom-right"><i product_id="${product.id}" class="fas fa-heart"></i></div>
         </div>
         <div class="product-info" id="campi-container">
           <textarea id="text-box" placeholder="send a message to vendor"></textarea>
@@ -184,12 +184,19 @@ Can use product id
 Get or Post route?
 */
 
-function addToFavourites() {
+function addToFavourites(productID) {
   //click the heart emoji to add the image to favourites
   //created a class for the heart emoji to get an easy handle
-
+  let url = '/addFavourites';
+  return $.ajax({ url: url, method: 'POST', data: 'product_id=' + productID });
 }
 
+$(document).ready(function() {
+  $(document).on('click', '.fa-heart', function() {
+    const productID = $(this).attr('product_id');
+    addToFavourites(productID);
+  })
+})
 
 function getAllListings() {
   let url = "/getlists";
@@ -200,6 +207,7 @@ getAllListings().then(function(data) {
   addProducts(data);
 });
 
+/*
 $(document).on('click', '.container-image', function() {
   $(".container-image").on("click", function(event) {
     const showInfo = $(this).parent(".product-container")
@@ -212,4 +220,5 @@ $(document).on('click', '.container-image', function() {
     }
   })
 });
+*/
 
