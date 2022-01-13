@@ -134,57 +134,118 @@ and traverse back down to closest child (product-info)
   information
 */
 const container = $(".container");
-  const addProductToList = function(products) {
-    container.append(products);
-}
-  const createProduct = function(product) {
-    console.log(product);
-    return `
-    <div class="col border">
-      <ul class="product-container">
-        <div class="container-image">
-          <img alt=${product.title} 
-            src= ${product.url_photo} width="200"
-            height="300"/> 
-          <div class="bottom-right"><i class="fas fa-heart"></i></div>
-        </div>
-        <div class="product-info" id="campi-container">
-          <textarea id="text-box" placeholder="send a message"></textarea>
-          <input id="submit" type="submit">
-        </div>
-      </ul>
-    </div>
-    `
-  }
-  function addProducts(products){
-    console.log(products);
-    for (let i = 0; i < products.length; i++) {
-      console.log(products[i]);
-      const productHTML = createProduct(products[i]);
-      addProductToList(productHTML);
-    }
-  }
-  function getAllListings() {
-    let url = "/getlists";
-    return $.ajax({url: url, method: 'GET'});
-  }
-  getAllListings().then(function( data ) {
-    console.log(data);
-    addProducts(data);
-  });
+//const row = $(".row");
+const addProductToList = function(product) {
+  $(".row:last").append(product);
 
-  function OnloadFunction (){
-    $(".container-image").click(function(event) {
-    const showInfo = $(this).parent(".product-container")
-      .find(".product-info").is(":hidden")
+}
+const createProduct = function(product, user, index, showDelete) {
+  //console.log(product);
+  const deleteButton = `
+    < form method = "post" action = "/products/delete/${product.id}" >
+      <button id="delete-monalisa" type="submit">delete</button>
+    </form > `;
+  let productHTML = `
+  < div class="col-md-3 border" >
+    <ul class="product-container">
+      <div class="container-image">
+        <img alt=${product.title}
+          src= ${product.url_photo} width="200"
+          height="300" />
+            <form method="post" action="/products/delete/${product.id}">
+            <button id="delete-monalisa" type="submit">delete</button>
+          </form>
+          <div class="bottom-right"><i product_id="${product.id}" class="fas fa-heart"></i></div>
+          <div class="bottom-right"><i class="fas fa-heart"></i></div>
+          ${showDelete ? deleteButton : ""}
+        </div >
+  <div class="product-info" id="campi-container">
+    <textarea id="text-box" placeholder="send a message to vendor"></textarea>
+    <input id="submit" type="submit">
+  </div>
+      </ul >
+    </div >
+  `
+  let user_id = parseInt(user);
+  let curr_id = parseInt(product.user_id);
+  console.log(curr_id);
+  console.log(user_id);
+  addProductToList(productHTML);
+  if (user_id === curr_id) {
+    console.log("here");
+    const containerImage = $(".container-image:last");
+    containerImage.append('<button type="button">Sold</button>');
+  }
+}
+function addProducts(products, user) {
+  //console.log(products);
+  for (let i = 0; i < products.length; i++) {
+    if (i % 4 === 0) {
+      container.append(`< div class="row" > `);
+    }
+    //console.log(products[i]);
+    //console.log(rowNum);
+    const productHTML = createProduct(products[i], user, i);
+    //addProductToList(productHTML);
+    if (i % 4 === 3) {
+      container.append(`</div > `)
+    }
+
+  }
+}
+
+//this function returns current user id
+function getCurrUserId(data) {
+  return data[0].user_id;
+}
+function getAllListings() {
+  let url = "/getlists";
+  return $.ajax({ url: url, method: 'GET' });
+}
+
+function getUser() {
+  let url = "/getUser";
+  return $.ajax({ url: url, method: 'GET' });
+}
+let params = [];
+$.when(
+  //get all paintings
+  getAllListings().then(function(data) {
+    params[0] = data;
+  }),
+  //get current user's id
+  getUser().then(function(user) {
+    params[1] = user;
+  })
+)
+  .then(
+    function() {
+      addProducts(params[0], params[1]);
+    }
+  );
+
+function addToFavourites(productID) {
+  //click the heart emoji to add the image to favourites
+  //created a class for the heart emoji to get an easy handle
+  let url = '/addFavourites';
+  return $.ajax({ url: url, method: 'POST', data: 'product_id=' + productID });
+}
+
+$(document).on('click', '.fa-heart', function() {
+  const productID = $(this).attr('product_id');
+  addToFavourites(productID);
+})
+
+
+$(document).on("click", ".container-image", function() {
+  $(".container-image").on("click", function(event) {
+    const showInfo = $(this)
+      .parent(".product-container")
+      .find(".product-info")
+      .is(":hidden");
     $(".product-info").hide();
     if (showInfo) {
-      $(this).parent(".product-container")
-        .find(".product-info")
-        .show()
+      $(this).parent(".product-container").find(".product-info").show();
     }
-  })}
-
-  $(document).ready(OnloadFunction());
-
-
+  });
+});

@@ -14,7 +14,7 @@ const db = new Pool({
  * @return {Promise<{}>} A promise to the user.
  */
 const getProducts = function() {
-  const queryString = `SELECT  title, price, description, url_photo FROM products`;
+  const queryString = `SELECT id, title, price, description, url_photo, user_id FROM products`;
   console.log("getProducts");
   return db.query(queryString)
     .then(result => {
@@ -26,4 +26,10 @@ const getProducts = function() {
     }
     )
 }
+
+const addToFavourite = (user_id, product_id) => {
+  const queryString = `INSERT INTO favourites (user_id, product_id) VALUES($1, $2)`;
+  return db.query(queryString, [user_id, product_id]);
+}
 exports.getProducts = getProducts;
+exports.addToFavourite = addToFavourite;

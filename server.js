@@ -9,6 +9,8 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const database = require('./database');
+const cookieSession = require('cookie-session');
+
 
 // PG database client/connection setup
 const { Pool } = require("pg");
@@ -28,10 +30,18 @@ app.use(
     isSass: false, // false => scss, true => sass
   })
 );
+app.use(cookieSession({
+  name: 'session',
+  keys: ["abc", "def"],
 
+  // Cookie Options
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}));
 app.use(express.static("public"));
 const usersRoutes = require("./routes/users");
+const productsRoutes = require("./routes/products");
 app.use("/home", usersRoutes(db));
+app.use("/products", productsRoutes(db));
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
 
@@ -45,6 +55,7 @@ app.use("/home", usersRoutes(db));
 // Separate them into separate routes files (see above).
 
 app.get("/", (req, res) => {
+  console.log(req.session.id);
   res.render("index");
 });
 
@@ -53,7 +64,7 @@ app.get("/getlists", (req, res) => {
   //console.log(database.getProducts());
   database.getProducts()
     .then(result => {
-      console.log("result",result);
+      console.log("result", result);
       return res.json(result);
     })
     .catch((e) => {
@@ -64,57 +75,65 @@ app.get("/getlists", (req, res) => {
 
 app.get("/sell_an_item", (req, res) => {
   res.render("sell_an_item")
-  })
+})
 
 app.get("/favourites", (req, res) => {
+  //retrieve the favourites from the database
+  //and pass it to the res.render
+  //return info from favourites table
   res.render("favourites")
+})
+
+app.post('/addFavourites', (req, res) => {
+  console.log(req.body)
+  database.addToFavourite(1, req.body.product_id)
+    .then(result => {
+      console.log(result)
+      res.redirect('/favourites');
+    })
 })
 
 // ------------------------------------ app.post ------------------------------
 
 
-app.post("/sell_an_item/upload", (req, res) => {
-  const title = req.body.title
-  const price = req.body.price
-  const description = req.body.description
-  const url = req.body.url
-  console.log("req.body",req.body)
-  const queryString = `
-  INSERT INTO products (title, price, description,url_photo)
-  VALUES ($1, $2, $3, $4)
-  RETURNING *;
-  `;
-  const values = [title, Number(price), description, url];
-    db.query(queryString, values)
-    .then(result => {
-       res.redirect("/")
-    })
-    .catch((e) => {
-      res.status(403).send("error occurs")
-      console.log(e)
-    }
-   )
-  })
+// app.post("/sell_an_item/upload", (req, res) => {
+//   const title = req.body.title
+//   const price = req.body.price
+//   const description = req.body.description
+//   const url = req.body.url
+//   const queryString = `
+//   INSERT INTO products (title, price, description,url_photo)
+//   VALUES ($1, $2, $3, $4)
+//   RETURNING *;
+//   `;
+//   const values = [title, Number(price), description, url];
+//     db.query(queryString, values)
+//     .then(result => {
+//        res.redirect("/")
+//     })
+//     .catch((e) => {
+//       res.status(403).send("error occurs")
+//     }
+//    )
+//   })
 
-  app.post("/delete", async(req, res) => {
+// app.post("/delete", async(req, res) => {
 
 
-    const querystring = `
-    DELETE
-    FROM products
-    WHERE id = 1
-    `
-    console.log("Req",req.body)
-    db.query(querystring)
-    .then(result => {
+//   const querystring = `
+//   DELETE
+//   FROM products
+//   WHERE id = 1
+//   `
+//   db.query(querystring)
+//   .then(result => {
 
-      res.redirect("/")
-    })
-    .catch((e) => {
-      console.log(e)
-      res.status(403).send("error occurs") }
-    )
-   })
+//     res.redirect("/")
+//   })
+//   .catch((e) => {
+//     res.status(403).send("error occurs") }
+//   )
+//  })
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
