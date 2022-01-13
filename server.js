@@ -8,9 +8,8 @@ const sassMiddleware = require("./lib/sass-middleware");
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
-const database = require('./database');
-const cookieSession = require('cookie-session');
-
+const database = require("./database");
+const cookieSession = require("cookie-session");
 
 // PG database client/connection setup
 const { Pool } = require("pg");
@@ -30,13 +29,16 @@ app.use(
     isSass: false, // false => scss, true => sass
   })
 );
-app.use(cookieSession({
-  name: 'session',
-  keys: ["abc", "def"],
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["abc", "def"],
+    httpOnly: false,
 
-  // Cookie Options
-  maxAge: 24 * 60 * 60 * 1000 // 24 hours
-}));
+    // Cookie Options
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+  })
+);
 app.use(express.static("public"));
 const usersRoutes = require("./routes/users");
 const productsRoutes = require("./routes/products");
@@ -59,33 +61,31 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-
 app.get("/getlists", (req, res) => {
   //console.log(database.getProducts());
-  database.getProducts()
-    .then(result => {
-      console.log("result",result);
+  database
+    .getProducts()
+    .then((result) => {
+      console.log("result", result);
       return res.json(result);
     })
     .catch((e) => {
       console.log(e);
-    }
-    );
+    });
 });
 app.get("/getUser", (req, res) => {
   return res.json(req.session.id);
 });
 
 app.get("/sell_an_item", (req, res) => {
-  res.render("sell_an_item")
-  })
+  res.render("sell_an_item");
+});
 
 app.get("/favourites", (req, res) => {
-  res.render("favourites")
-})
+  res.render("favourites");
+});
 
 // ------------------------------------ app.post ------------------------------
-
 
 // app.post("/sell_an_item/upload", (req, res) => {
 //   const title = req.body.title
@@ -108,23 +108,22 @@ app.get("/favourites", (req, res) => {
 //    )
 //   })
 
-  // app.post("/delete", async(req, res) => {
+// app.post("/delete", async(req, res) => {
 
+//   const querystring = `
+//   DELETE
+//   FROM products
+//   WHERE id = 1
+//   `
+//   db.query(querystring)
+//   .then(result => {
 
-  //   const querystring = `
-  //   DELETE
-  //   FROM products
-  //   WHERE id = 1
-  //   `
-  //   db.query(querystring)
-  //   .then(result => {
-
-  //     res.redirect("/")
-  //   })
-  //   .catch((e) => {
-  //     res.status(403).send("error occurs") }
-  //   )
-  //  })
+//     res.redirect("/")
+//   })
+//   .catch((e) => {
+//     res.status(403).send("error occurs") }
+//   )
+//  })
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

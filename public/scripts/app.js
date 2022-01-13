@@ -139,8 +139,12 @@ const container = $(".container");
     $(".row:last").append(product);
     
 }
-  const createProduct = function(product, user, index) {
+  const createProduct = function(product, user, index, showDelete) {
     //console.log(product);
+    const deleteButton = `
+    <form method="post" action="/products/delete/${product.id}">
+      <button id="delete-monalisa" type="submit">delete</button>
+    </form>`;
     let productHTML = `
     <div class="col-md-3 border">
       <ul class="product-container">
@@ -148,10 +152,8 @@ const container = $(".container");
           <img alt=${product.title}
             src= ${product.url_photo} width="200"
             height="300"/>
-            <form method="post" action="/products/delete/${product.id}">
-            <button id="delete-monalisa" type="submit">delete</button>
-          </form>
           <div class="bottom-right"><i class="fas fa-heart"></i></div>
+          ${showDelete ? deleteButton : ""}
         </div>
         <div class="product-info" id="campi-container">
           <textarea id="text-box" placeholder="send a message to vendor"></textarea>
@@ -218,15 +220,15 @@ const container = $(".container");
     }
   );
 
-  $(document).on('click', '.container-image', function(){
-    $(".container-image").on("click", function(event) {
-    const showInfo = $(this).parent(".product-container")
-      .find(".product-info").is(":hidden")
+$(document).on("click", ".container-image", function () {
+  $(".container-image").on("click", function (event) {
+    const showInfo = $(this)
+      .parent(".product-container")
+      .find(".product-info")
+      .is(":hidden");
     $(".product-info").hide();
     if (showInfo) {
-      $(this).parent(".product-container")
-        .find(".product-info")
-        .show()
-    }})
+      $(this).parent(".product-container").find(".product-info").show();
+    }
+  });
 });
-
