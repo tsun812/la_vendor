@@ -135,12 +135,12 @@ and traverse back down to closest child (product-info)
 */
 const container = $(".container");
 //const row = $(".row");
-  const addProductToList = function(products, rowNum) {
-    $(".row:last").append(products);
+const addProductToList = function(products, rowNum) {
+  $(".row:last").append(products);
 }
-  const createProduct = function(product) {
-    console.log(product);
-    return `
+const createProduct = function(product) {
+  console.log(product);
+  return `
     <div class="col-md-3 border">
       <ul class="product-container">
         <div class="container-image">
@@ -159,34 +159,49 @@ const container = $(".container");
       </ul>
     </div>
     `
-  }
-  function addProducts(products){
-    console.log(products);
-    for (let i = 0; i < products.length; i++) {
-      if (i % 4 === 0){ 
-        container.append(`<div class="row">`);
-      }
-      console.log(products[i]);
-      let rowNum = (i - (i % 4)) / 4;
-      console.log(rowNum);
-      const productHTML = createProduct(products[i], rowNum);
-      addProductToList(productHTML);
-      if (i % 4 === 3) {
-        container.append(`</div>`)
-      }
+}
+function addProducts(products) {
+  console.log(products);
+  for (let i = 0; i < products.length; i++) {
+    if (i % 4 === 0) {
+      container.append(`<div class="row">`);
+    }
+    console.log(products[i]);
+    let rowNum = (i - (i % 4)) / 4;
+    console.log(rowNum);
+    const productHTML = createProduct(products[i], rowNum);
+    addProductToList(productHTML);
+    if (i % 4 === 3) {
+      container.append(`</div>`)
     }
   }
-  function getAllListings() {
-    let url = "/getlists";
-    return $.ajax({url: url, method: 'GET'});
-  }
-  getAllListings().then(function( data ) {
-    console.log(data);
-    addProducts(data);
-  });
+}
 
-  $(document).on('click', '.container-image', function(){
-    $(".container-image").on("click", function(event) {
+/*
+Function to add image to favourites
+When the heart emoji is click, the image is send to favourite page
+Can use product id
+Get or Post route?
+*/
+
+function addToFavourites() {
+  //click the heart emoji to add the image to favourites
+  //created a class for the heart emoji to get an easy handle
+
+}
+
+
+function getAllListings() {
+  let url = "/getlists";
+  return $.ajax({ url: url, method: 'GET' });
+}
+getAllListings().then(function(data) {
+  console.log(data);
+  addProducts(data);
+});
+
+$(document).on('click', '.container-image', function() {
+  $(".container-image").on("click", function(event) {
     const showInfo = $(this).parent(".product-container")
       .find(".product-info").is(":hidden")
     $(".product-info").hide();
@@ -194,6 +209,7 @@ const container = $(".container");
       $(this).parent(".product-container")
         .find(".product-info")
         .show()
-    }})
+    }
+  })
 });
 
