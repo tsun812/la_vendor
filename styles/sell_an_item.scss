@@ -1,0 +1,55 @@
+
+::placeholder {
+  width: 100%;
+  color: blue;
+  background-color: lightblue;
+  text-align: center;
+  font-size: 0.5rem;
+  text-transform: uppercase;
+  border-radius: 50px;
+
+}
+
+textarea {
+
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 10px;
+  resize: none;
+}
+
+textarea:hover{
+  background-color: lightblue;
+}
+
+input[type=submit]:hover {
+  background-color: lightblue;
+}
+
+input[type=submit] {
+  background-color: lightblue;
+  width: 100%;
+  padding: 12px 20px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: 100%;
+  color: blue;
+  background-color: white;
+  text-align: center;
+  font-size: 0.5rem;
+  text-transform: uppercase;
+  border-radius: 50px;
+}
+
+
+
+
+
+
+
+
+

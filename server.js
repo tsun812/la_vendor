@@ -1,4 +1,5 @@
 // load .env data into process.env
+// adding this
 require("dotenv").config();
 
 // Web server config
@@ -7,16 +8,15 @@ const sassMiddleware = require("./lib/sass-middleware");
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
+const database = require('./database');
+const cookieSession = require('cookie-session');
+
 
 // PG database client/connection setup
 const { Pool } = require("pg");
 const dbParams = require("./lib/db.js");
 const db = new Pool(dbParams);
 db.connect();
-
-// Load the logger first so all (static) HTTP requests are logged to STDOUT
-// 'dev' = Concise output colored by response status for development use.
-//         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
 app.use(morgan("dev"));
 
 app.set("view engine", "ejs");
@@ -30,18 +30,24 @@ app.use(
     isSass: false, // false => scss, true => sass
   })
 );
+app.use(cookieSession({
+  name: 'session',
+  keys: ["abc", "def"],
 
+  // Cookie Options
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}));
 app.use(express.static("public"));
-
+const usersRoutes = require("./routes/users");
+const productsRoutes = require("./routes/products");
+app.use("/home", usersRoutes(db));
+app.use("/products", productsRoutes(db));
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
-const usersRoutes = require("./routes/users");
-const widgetsRoutes = require("./routes/widgets");
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
-app.use("/api/users", usersRoutes(db));
-app.use("/api/widgets", widgetsRoutes(db));
+//app.use("/home", usersRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
 // Home page
@@ -49,8 +55,76 @@ app.use("/api/widgets", widgetsRoutes(db));
 // Separate them into separate routes files (see above).
 
 app.get("/", (req, res) => {
+  console.log(req.session.id);
   res.render("index");
 });
+
+
+app.get("/getlists", (req, res) => {
+  //console.log(database.getProducts());
+  database.getProducts()
+    .then(result => {
+      console.log("result",result);
+      return res.json(result);
+    })
+    .catch((e) => {
+      console.log(e);
+    }
+    );
+});
+app.get("/getUser", (req, res) => {
+  return res.json(req.session.id);
+});
+
+app.get("/sell_an_item", (req, res) => {
+  res.render("sell_an_item")
+  })
+
+app.get("/favourites", (req, res) => {
+  res.render("favourites")
+})
+
+// ------------------------------------ app.post ------------------------------
+
+
+// app.post("/sell_an_item/upload", (req, res) => {
+//   const title = req.body.title
+//   const price = req.body.price
+//   const description = req.body.description
+//   const url = req.body.url
+//   const queryString = `
+//   INSERT INTO products (title, price, description,url_photo)
+//   VALUES ($1, $2, $3, $4)
+//   RETURNING *;
+//   `;
+//   const values = [title, Number(price), description, url];
+//     db.query(queryString, values)
+//     .then(result => {
+//        res.redirect("/")
+//     })
+//     .catch((e) => {
+//       res.status(403).send("error occurs")
+//     }
+//    )
+//   })
+
+  // app.post("/delete", async(req, res) => {
+
+
+  //   const querystring = `
+  //   DELETE
+  //   FROM products
+  //   WHERE id = 1
+  //   `
+  //   db.query(querystring)
+  //   .then(result => {
+
+  //     res.redirect("/")
+  //   })
+  //   .catch((e) => {
+  //     res.status(403).send("error occurs") }
+  //   )
+  //  })
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);

@@ -7,6 +7,7 @@
 
 const express = require('express');
 const router  = express.Router();
+router.set("view engine", "ejs")
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
@@ -23,3 +24,9 @@ module.exports = (db) => {
   });
   return router;
 };
+
+
+
+
+
+
