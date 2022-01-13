@@ -80,6 +80,7 @@ app.get("/sell_an_item", (req, res) => {
 app.get("/favourites", (req, res) => {
   //retrieve the favourites from the database
   //and pass it to the res.render
+  //return info from favourites table
   res.render("favourites")
 })
 

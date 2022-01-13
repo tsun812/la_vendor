@@ -20,11 +20,10 @@ module.exports = (db) => {
   router.post("/delete/:id", (req, res) => {
     //sql query to delete a record with id
    const id = req.params.id;
-   console.log("+++++++++++++", id)
      const querystring = `
     DELETE
     FROM products
-    WHERE id = $1
+    WHERE id = $1 
     `
     db.query(querystring, [id])
     .then(result => {
@@ -35,9 +34,6 @@ module.exports = (db) => {
       return res.status(403).send("error occurs") }
     )
   });
-
-
-
 
     return router;
   }
