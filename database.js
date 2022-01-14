@@ -1,6 +1,7 @@
 const { Pool } = require('pg');
 const db = new Pool({
   user: 'labber',
+  password: 'labber',
   host: 'localhost',
   database: 'midterm'
 });
@@ -15,9 +16,9 @@ const db = new Pool({
 const getProducts = function() {
   const queryString = `SELECT id, title, price, description, url_photo, user_id FROM products`;
   console.log("getProducts");
-   return db.query(queryString)
+  return db.query(queryString)
     .then(result => {
-      console.log("result",result.rows);
+      console.log("result", result.rows);
       return result.rows;
     })
     .catch((e) => {
@@ -25,4 +26,9 @@ const getProducts = function() {
     }
     )
 }
+const addToFavourite = (user_id, product_id) => {
+  const queryString = `INSERT INTO favourites (user_id, product_id) VALUES($1, $2)`;
+  return db.query(queryString, [user_id, product_id]);
+}
 exports.getProducts = getProducts;
+exports.addToFavourite = addToFavourite;

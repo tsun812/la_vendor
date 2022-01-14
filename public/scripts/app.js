@@ -139,19 +139,21 @@ const container = $(".container");
     $(".row:last").append(product);
     
 }
-  const createProduct = function(product, user, index) {
+  const createProduct = function(product, user, index, showDelete) {
     //console.log(product);
+    const deleteButton = `
+    <form method="post" action="/products/delete/${product.id}">
+      <button id="delete-monalisa" type="submit">delete</button>
+    </form>`;
     let productHTML = `
     <div class="col-md-3 border">
       <ul class="product-container">
-        <div class="container-image">
+        <div class="container-image" data-image=${product.id}>
           <img alt=${product.title}
             src= ${product.url_photo} width="200"
             height="300"/>
-            <form method="post" action="/products/delete/${product.id}">
-            <button id="delete-monalisa" type="submit">delete</button>
-          </form>
-          <div class="bottom-right"><i class="fas fa-heart"></i></div>
+          <div class="bottom-right"><i class="fas fa-heart" id=${product.id}></i></div>
+          ${showDelete ? deleteButton : ""}
         </div>
         <div class="product-info" id="campi-container">
           <textarea id="text-box" placeholder="send a message to vendor"></textarea>
@@ -168,7 +170,7 @@ const container = $(".container");
     if(user_id === curr_id) {
       console.log("here");
       const containerImage = $(".container-image:last");
-      containerImage.append('<button type="button">Sold</button>');
+      containerImage.append('<button class="sold" type="button">Sold</button>');
     }
   }
   function addProducts(products, user){
@@ -187,11 +189,15 @@ const container = $(".container");
 
     }
   }
+
   
   //this function returns current user id
   function getCurrUserId(data){
    return data[0].user_id;
   }
+  
+  
+
   function getAllListings() {
     let url = "/getlists";
     return $.ajax({url: url, method: 'GET'});
@@ -201,6 +207,7 @@ const container = $(".container");
     let url = "/getUser";
     return $.ajax({url: url, method: 'GET'});
   }
+
   let params = [];
   $.when(
   //get all paintings 
@@ -218,15 +225,40 @@ const container = $(".container");
     }
   );
 
-  $(document).on('click', '.container-image', function(){
-    $(".container-image").on("click", function(event) {
-    const showInfo = $(this).parent(".product-container")
-      .find(".product-info").is(":hidden")
+$(document).on("click", ".container-image", function () {
+  $(".container-image").on("click", function (event) {
+    const showInfo = $(this)
+      .parent(".product-container")
+      .find(".product-info")
+      .is(":hidden");
     $(".product-info").hide();
     if (showInfo) {
-      $(this).parent(".product-container")
-        .find(".product-info")
-        .show()
-    }})
+      $(this).parent(".product-container").find(".product-info").show();
+    }
+  });
 });
+function addToFavourites(productID) {
+  //click the heart emoji to add the image to favourites
+  //created a class for the heart emoji to get an easy handle
+  let url = '/addFavourites';
+  return $.ajax({ url: url, method: 'POST', data: 'product_id=' + productID });
+}
+$(document).on('click', '.fa-heart', function() {
+      const productID = $(this).attr('id');
+      console.log(productID);
+      addToFavourites(productID);
+  })
 
+function markAsSold(productID) {
+    let url = 'products/marksold';
+    return $.ajax({ url: url, method: 'POST', data: 'product_id=' + productID });
+}
+$(document).on('click', '.sold', function() {
+    const imageContainer = $(this).parent();
+    const soldText = '<div class="markSold">SOLD</div>';
+    imageContainer.append(soldText);
+    $('.markSold').addClass('markSold');
+    const productID = $(this).closest('.container-image').attr('data-image');
+    console.log(productID);
+    markAsSold(productID);
+})
