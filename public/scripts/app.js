@@ -47,6 +47,12 @@ const createProduct = function (product, user, index, showDelete) {
       containerImage.append('<button class="user-botton sold" type="button">Sold</button>');
       containerImage.append(deleteButton);
     }
+    if(product.available_status === false){
+      const imageContainer = $(".container-image:last");
+      const soldText = '<div class="markSold">SOLD</div>';
+      imageContainer.append(soldText);
+      $('.markSold').addClass('markSold');
+    }
   }
 
 function addProducts(products, user) {
