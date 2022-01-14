@@ -1,129 +1,4 @@
 /*
-$(document).ready(function() {
-  const monalisaContainer = $("#monalisa-container")
-  const campiContainer = $("#campi-container")
-  const faceContainer = $("#face-container")
-  const lastDanceContainer = $("#last_dance-container")
-  const geniusContainer = $("#genius-container")
-  const festivalContainer = $("#festival-container")
-  const womenContainer = $("#women-container")
-  const kidBearContainer = $("#kid_bear-container")
-  const textBox = $("#text-box")
-  const submit = $("#submit")
-
-  $("#monalisa").click(function(event) {
-    event.preventDefault()
-    if (monalisaContainer.first().is(":hidden")) {
-      monalisaContainer.show("slow", () => {
-      });
-      monalisaContainer.text("Artwork: Monalisa")
-      monalisaContainer.append(textBox)
-      monalisaContainer.append(submit)
-    } else {
-      monalisaContainer.hide();
-    }
-  })
-
-  $("#campi").click(function(event) {
-    event.preventDefault()
-    if (campiContainer.first().is(":hidden")) {
-      campiContainer.show("slow", () => {
-      });
-      campiContainer.text("Artwork: Campi")
-      campiContainer.append(textBox)
-      campiContainer.append(submit)
-    } else {
-      campiContainer.hide();
-    }
-  })
-
-  $("#face").click(function(event) {
-    event.preventDefault()
-    if (faceContainer.first().is(":hidden")) {
-      faceContainer.show("slow", () => {
-      });
-      faceContainer.text("Artwork: Face")
-      faceContainer.append(textBox)
-      faceContainer.append(submit)
-    } else {
-      faceContainer.hide();
-    }
-  })
-*/
-/*
-Adding the description for the rest of the pcitures
-Jan. 10 @ 7:00 PST
-*/
-/*
-  $("#last-dance").click(function(event) {
-    event.preventDefault()
-    if (lastDanceContainer.first().is(":hidden")) {
-      lastDanceContainer.show("slow", () => {
-      });
-      lastDanceContainer.text("Artwork: Last Dance")
-      lastDanceContainer.append(textBox)
-      lastDanceContainer.append(submit)
-    } else {
-      lastDanceContainer.hide();
-    }
-  })
-
-  $("#genius").click(function(event) {
-    event.preventDefault()
-    if (geniusContainer.first().is(":hidden")) {
-      geniusContainer.show("slow", () => {
-      });
-      geniusContainer.text("Artwork: Genius - A. E.")
-      geniusContainer.append(textBox)
-      geniusContainer.append(submit)
-    } else {
-      geniusContainer.hide();
-    }
-  })
-
-  $("#festival").click(function(event) {
-    event.preventDefault()
-    if (festivalContainer.first().is(":hidden")) {
-      festivalContainer.show("slow", () => {
-      });
-      festivalContainer.text("Artwork: Festival in Peru")
-      festivalContainer.append(textBox)
-      festivalContainer.append(submit)
-    } else {
-      festivalContainer.hide();
-    }
-  })
-
-  $("#women").click(function(event) {
-    event.preventDefault()
-    if (womenContainer.first().is(":hidden")) {
-      womenContainer.show("slow", () => {
-      });
-      womenContainer.text("Artwork: Festival in Peru")
-      womenContainer.append(textBox)
-      womenContainer.append(submit)
-    } else {
-      womenContainer.hide();
-    }
-  })
-
-  $("#kid-bear").click(function(event) {
-    event.preventDefault()
-    if (kidBearContainer.first().is(":hidden")) {
-      kidBearContainer.show("slow", () => {
-      });
-      kidBearContainer.text("Artwork: Festival in Peru")
-      kidBearContainer.append(textBox)
-      kidBearContainer.append(submit)
-    } else {
-      kidBearContainer.hide();
-    }
-  })
-
-})
-*/
-
-/*
 This will traverse to the closest parent (product-container)
 and traverse back down to closest child (product-info)
 
@@ -135,17 +10,16 @@ and traverse back down to closest child (product-info)
 */
 const container = $(".container");
 //const row = $(".row");
-  const addProductToList = function(product) {
-    $(".row:last").append(product);
-    
-}
-  const createProduct = function(product, user, index, showDelete) {
-    //console.log(product);
-    const deleteButton = `
+const addProductToList = function (product) {
+  $(".row:last").append(product);
+};
+const createProduct = function (product, user, index, showDelete) {
+  //console.log(product);
+  const deleteButton = `
     <form method="post" action="/products/delete/${product.id}">
       <button id="delete-monalisa" type="submit">delete</button>
     </form>`;
-    let productHTML = `
+  let productHTML = `
     <div class="col-md-3 border">
       <ul class="product-container">
         <div class="container-image" data-image=${product.id}>
@@ -173,57 +47,56 @@ const container = $(".container");
       containerImage.append('<button class="sold" type="button">Sold</button>');
     }
   }
-  function addProducts(products, user){
-    //console.log(products);
-    for (let i = 0; i < products.length; i++) {
-      if (i % 4 === 0){ 
-        container.append(`<div class="row">`);
-      }
-      //console.log(products[i]);
-      //console.log(rowNum);
-      const productHTML = createProduct(products[i], user, i);
-      //addProductToList(productHTML);
-      if (i % 4 === 3) {
-        container.append(`</div>`)
-      }
-
+};
+function addProducts(products, user) {
+  //console.log(products);
+  for (let i = 0; i < products.length; i++) {
+    if (i % 4 === 0) {
+      container.append(`<div class="row">`);
+    }
+    //console.log(products[i]);
+    //console.log(rowNum);
+    const productHTML = createProduct(
+      products[i],
+      user,
+      i,
+      document.cookie.indexOf("session=") > -1
+    );
+    //addProductToList(productHTML);
+    if (i % 4 === 3) {
+      container.append(`</div>`);
     }
   }
+}
 
-  
-  //this function returns current user id
-  function getCurrUserId(data){
-   return data[0].user_id;
-  }
-  
-  
+//this function returns current user id
+function getCurrUserId(data) {
+  return data[0].user_id;
+}
 
-  function getAllListings() {
-    let url = "/getlists";
-    return $.ajax({url: url, method: 'GET'});
-  }
+function getAllListings() {
+  let url = "/getlists";
+  return $.ajax({ url: url, method: "GET" });
+}
 
-  function getUser() {
-    let url = "/getUser";
-    return $.ajax({url: url, method: 'GET'});
-  }
+function getUser() {
+  let url = "/getUser";
+  return $.ajax({ url: url, method: "GET" });
+}
 
-  let params = [];
-  $.when(
-  //get all paintings 
-  getAllListings().then(function( data ) {
+let params = [];
+$.when(
+  //get all paintings
+  getAllListings().then(function (data) {
     params[0] = data;
   }),
   //get current user's id
-  getUser().then(function( user ) {
+  getUser().then(function (user) {
     params[1] = user;
   })
-  )
-  .then(
-    function(){
-    addProducts(params[0], params[1]);
-    }
-  );
+).then(function () {
+  addProducts(params[0], params[1]);
+});
 
 $(document).on("click", ".container-image", function () {
   $(".container-image").on("click", function (event) {
@@ -240,8 +113,8 @@ $(document).on("click", ".container-image", function () {
 function addToFavourites(productID) {
   //click the heart emoji to add the image to favourites
   //created a class for the heart emoji to get an easy handle
-  let url = '/addFavourites';
-  return $.ajax({ url: url, method: 'POST', data: 'product_id=' + productID });
+  let url = "/addFavourites";
+  return $.ajax({ url: url, method: "POST", data: "product_id=" + productID });
 }
 $(document).on('click', '.fa-heart', function() {
       const productID = $(this).attr('id');
