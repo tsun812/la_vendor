@@ -17,7 +17,7 @@ const createProduct = function (product, user, index, showDelete) {
   //console.log(product);
   const deleteButton = `
     <form method="post" action="/products/delete/${product.id}">
-      <button id="delete-monalisa" type="submit">delete</button>
+      <button id="delete-monalisa" class="user-botton" type="submit">delete</button>
     </form>`;
   let productHTML = `
     <div class="col-md-3 border">
@@ -27,7 +27,6 @@ const createProduct = function (product, user, index, showDelete) {
             src= ${product.url_photo} width="200"
             height="300"/>
           <div class="bottom-right"><i class="fas fa-heart" id=${product.id}></i></div>
-          ${showDelete ? deleteButton : ""}
         </div>
         <div class="product-info" id="campi-container">
           <textarea id="text-box" placeholder="send a message to vendor"></textarea>
@@ -44,10 +43,13 @@ const createProduct = function (product, user, index, showDelete) {
     if(user_id === curr_id) {
       console.log("here");
       const containerImage = $(".container-image:last");
-      containerImage.append('<button class="sold" type="button">Sold</button>');
+      containerImage.append('<div class="button-container"></div>');
+      //const userBotton = $(".button-container:last");
+      containerImage.append('<button class="user-botton sold" type="button">Sold</button>');
+      containerImage.append(deleteButton);
     }
   }
-};
+
 function addProducts(products, user) {
   //console.log(products);
   for (let i = 0; i < products.length; i++) {
