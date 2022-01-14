@@ -1,9 +1,9 @@
-const { Pool } = require('pg');
+const { Pool } = require("pg");
 const db = new Pool({
-  user: 'labber',
-  password: 'labber',
-  host: 'localhost',
-  database: 'midterm'
+  user: "labber",
+  password: "labber",
+  host: "localhost",
+  database: "midterm",
 });
 
 /// Users
@@ -13,22 +13,21 @@ const db = new Pool({
  * @param {String} email The email of the user.
  * @return {Promise<{}>} A promise to the user.
  */
-const getProducts = function() {
+const getProducts = function () {
   const queryString = `SELECT id, title, price, description, url_photo, user_id FROM products`;
-  console.log("getProducts");
-  return db.query(queryString)
-    .then(result => {
+  return db
+    .query(queryString)
+    .then((result) => {
       console.log("result", result.rows);
       return result.rows;
     })
     .catch((e) => {
       console.log(e);
-    }
-    )
-}
+    });
+};
 const addToFavourite = (user_id, product_id) => {
   const queryString = `INSERT INTO favourites (user_id, product_id) VALUES($1, $2)`;
   return db.query(queryString, [user_id, product_id]);
-}
+};
 exports.getProducts = getProducts;
 exports.addToFavourite = addToFavourite;
