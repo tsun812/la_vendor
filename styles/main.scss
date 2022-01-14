@@ -18,11 +18,8 @@ body {
 }
 // ---------------------------------- paintings and description boxes ----------
 
-#monalisa {
-  cursor: pointer;
-}
 
-#monalisa-container {
+.container {
   display: none;
   flex-direction: column;
   align-items: center;
@@ -37,141 +34,6 @@ body {
   padding: 20px;
 }
 
-#campi {
-  cursor: pointer;
-}
-
-#campi-container {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  border-style: solid;
-  border-bottom: blue solid 3px;
-  border-top: blue solid 3Px;
-  border-left: blue solid 3px;
-  border-right: blue solid 3px;
-  width: 100%;
-  font-size: large;
-  font-style: black;
-  padding: 20px;
-}
-
-#face {
-  cursor: pointer;
-}
-
-#face-container {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  border-style: solid;
-  border-bottom: blue solid 3px;
-  border-top: blue solid 3Px;
-  border-left: blue solid 3px;
-  border-right: blue solid 3px;
-  width: 100%;
-  font-size: large;
-  font-style: black;
-  padding: 20px;
-}
-
-//--- Jan. 10 ---
-
-#last-dance {
-  cursor: pointer;
-}
-
-#last_dance-container {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  border-style: solid;
-  border-bottom: blue solid 3px;
-  border-top: blue solid 3Px;
-  border-left: blue solid 3px;
-  border-right: blue solid 3px;
-  width: 100%;
-  font-size: large;
-  font-style: black;
-  padding: 20px;
-}
-
-#genius {
-  cursor: pointer;
-}
-
-#genius-container {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  border-style: solid;
-  border-bottom: blue solid 3px;
-  border-top: blue solid 3Px;
-  border-left: blue solid 3px;
-  border-right: blue solid 3px;
-  width: 100%;
-  font-size: large;
-  font-style: black;
-  padding: 20px;
-}
-
-#festival {
-  cursor: pointer;
-}
-
-#festival-container {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  border-style: solid;
-  border-bottom: blue solid 3px;
-  border-top: blue solid 3Px;
-  border-left: blue solid 3px;
-  border-right: blue solid 3px;
-  width: 100%;
-  font-size: large;
-  font-style: black;
-  padding: 20px;
-}
-
-
-#women {
-  cursor: pointer;
-}
-
-#women-container {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  border-style: solid;
-  border-bottom: blue solid 3px;
-  border-top: blue solid 3Px;
-  border-left: blue solid 3px;
-  border-right: blue solid 3px;
-  width: 100%;
-  font-size: large;
-  font-style: black;
-  padding: 20px;
-}
-
-#kid-bear {
-  cursor: pointer;
-}
-
-#kid_bear-container {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  border-style: solid;
-  border-bottom: blue solid 3px;
-  border-top: blue solid 3Px;
-  border-left: blue solid 3px;
-  border-right: blue solid 3px;
-  width: 100%;
-  font-size: large;
-  font-style: black;
-  padding: 20px;
-}
 
 #text-box {
   display: flex;
