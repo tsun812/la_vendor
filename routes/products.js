@@ -34,6 +34,7 @@ module.exports = (db) => {
       return res.status(403).send("error occurs") }
     )
   });
+
   router.post("/sell_an_item/upload", (req, res) => {
   const title = req.body.title
   const price = req.body.price
@@ -54,6 +55,24 @@ module.exports = (db) => {
     }
    )
   })
+
+  router.post("/marksold", (req, res) => {
+    const userId = req.body.product_id;
+    const queryString = `
+    UPDATE products 
+    SET available_status =  $1
+    WHERE id = $2
+    `;
+    const values = ['FALSE', userId];
+      db.query(queryString, values)
+      .then(result => {
+         res.redirect("/")
+      })
+      .catch((e) => {
+        res.status(403).send("error occurs")
+      }
+     )
+    })
 
     return router;
   }
