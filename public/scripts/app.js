@@ -9,12 +9,11 @@ and traverse back down to closest child (product-info)
   information
 */
 const container = $(".container");
-//const row = $(".row");
 const addProductToList = function (product) {
   $(".row:last").append(product);
+  console.log(product);
 };
 const createProduct = function (product, user, index, showDelete) {
-  //console.log(product);
   const deleteButton = `
     <form method="post" action="/products/delete/${product.id}">
       <button id="delete-monalisa" type="submit">delete</button>
@@ -40,30 +39,24 @@ const createProduct = function (product, user, index, showDelete) {
     `;
   let user_id = parseInt(user);
   let curr_id = parseInt(product.user_id);
-  console.log(curr_id);
-  console.log(user_id);
   addProductToList(productHTML);
   if (user_id === curr_id) {
-    console.log("here");
     const containerImage = $(".container-image:last");
     containerImage.append('<button type="button">Sold</button>');
   }
 };
 function addProducts(products, user) {
-  //console.log(products);
+  console.log("allproducts", products);
   for (let i = 0; i < products.length; i++) {
     if (i % 4 === 0) {
       container.append(`<div class="row">`);
     }
-    //console.log(products[i]);
-    //console.log(rowNum);
-    const productHTML = createProduct(
+    let productHTML = createProduct(
       products[i],
       user,
       i,
       document.cookie.indexOf("session=") > -1
     );
-    //addProductToList(productHTML);
     if (i % 4 === 3) {
       container.append(`</div>`);
     }
@@ -92,10 +85,15 @@ $.when(
     params[0] = data;
   }),
   //get current user's id
-  getUser().then(function (user) {
-    params[1] = user;
-  })
+  getUser()
+    .then(function (user) {
+      params[1] = user;
+    })
+    .catch(() => {
+      console.log("unable to fetch users");
+    })
 ).then(function () {
+  console.log("productReceive", params);
   addProducts(params[0], params[1]);
 });
 
